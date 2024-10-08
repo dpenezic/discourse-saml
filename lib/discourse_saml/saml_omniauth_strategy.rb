@@ -18,24 +18,24 @@ class ::DiscourseSaml::SamlOmniauthStrategy < OmniAuth::Strategies::SAML
   end
 
   def callback_phase
-    File.write('/var/www/discourse/log/production.log', 'Callback pokrenut\n', mode: 'a')
-    if request.request_method.downcase.to_sym == :post && !request.params["SameSite"] &&
-         request.params["SAMLResponse"]
-      env[Rack::RACK_SESSION_OPTIONS][:skip] = true # Do not set any session cookies. They'll override our SameSite ones
-      File.write('/var/www/discourse/log/production.log', 'Neko muljanje s SameSite parametrom', mode: 'a')
-      # Make browser re-issue the request in a same-site context so we get cookies
-      # For this particular action, we explicitly **want** cross-site requests to include session cookies
-      render_auto_submitted_form(
-        destination: callback_url,
-        params: {
-          "SAMLResponse" => request.params["SAMLResponse"],
-          "SameSite" => "1",
-        },
-      )
-    else
+    File.write('/var/www/discourse/log/production.log', 'Callback pokrenut', mode: 'a')
+#    if request.request_method.downcase.to_sym == :post && !request.params["SameSite"] &&
+#         request.params["SAMLResponse"]
+#      env[Rack::RACK_SESSION_OPTIONS][:skip] = true # Do not set any session cookies. They'll override our SameSite ones
+#      File.write('/var/www/discourse/log/production.log', 'Neko muljanje s SameSite parametrom', mode: 'a')
+#      # Make browser re-issue the request in a same-site context so we get cookies
+#      # For this particular action, we explicitly **want** cross-site requests to include session cookies
+#      render_auto_submitted_form(
+#        destination: callback_url,
+#        params: {
+#          "SAMLResponse" => request.params["SAMLResponse"],
+#          "SameSite" => "1",
+#        },
+#      )
+#    else
       File.write('/var/www/discourse/log/production.log', 'Ovo je kao u redu', mode: 'a')
       super
-    end
+#    end
   end
 
   private
